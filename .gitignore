@@ -1,0 +1,10 @@
+*.d
+*.o
+*.axf
+*.hex
+MDK-ARM/cube_emwin.uvguix.feng
+MDK-ARM/startup_stm32f429xx.lst
+MDK-ARM/cube_emwin/cube_emwin.htm
+MDK-ARM/cube_emwin/cube_emwin.lnp
+MDK-ARM/cube_emwin/cube_emwin.build_log.htm
+MDK-ARM/cube_emwin/cube_emwin_cube_emwin.dep
