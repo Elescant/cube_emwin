@@ -65,6 +65,7 @@
 
 /* Private define ------------------------------------------------------------*/
 //#define RGB565_240X320_ADDRESS 0xD0000000
+#define LCD_FRAME_BUFFER       ((uint32_t)0xD0000000)
 #define RGB565_240X320_ADDRESS ((uint32_t)&TU_RGB565_240x320)
 #define PC14_OSC32_IN_Pin GPIO_PIN_14
 #define PC14_OSC32_IN_GPIO_Port GPIOC

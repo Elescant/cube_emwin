@@ -80,7 +80,7 @@ extern void GRAPHICS_MainTask(void);
 /* Private function prototypes -----------------------------------------------*/
 
 /* USER CODE END PFP */
-
+void LCD_DrawCircle(uint16_t Xpos, uint16_t Ypos, uint16_t Radius);
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
@@ -134,14 +134,39 @@ int main(void)
 //	GUI_SetColor(GUI_BLUE);
 //	GUI_DrawLine(0,0,50,50);
   /* Graphic application */  
-  //GRAPHICS_MainTask();
-	__HAL_LTDC_LAYER_ENABLE(&hltdc,LTDC_LAYER_1);
-	__HAL_LTDC_RELOAD_IMMEDIATE_CONFIG(&hltdc);
-  __HAL_LTDC_ENABLE(&hltdc);
-    
+//  GRAPHICS_MainTask();
+//	__HAL_LTDC_LAYER_ENABLE(&hltdc,LTDC_LAYER_1);
+//	__HAL_LTDC_RELOAD_IMMEDIATE_CONFIG(&hltdc);
+//  __HAL_LTDC_ENABLE(&hltdc);
+    LCD_DrawCircle(50,50,45);
   /* Infinite loop */
   for(;;);
 
+}
+
+/* LCD Size (Width and Height) */
+#define  LCD_PIXEL_WIDTH    ((uint16_t)240)
+#define  LCD_PIXEL_HEIGHT   ((uint16_t)320)
+static uint32_t CurrentFrameBuffer = LCD_FRAME_BUFFER;
+static uint16_t CurrentTextColor   = 0x0000;
+
+void LCD_DrawCircle(uint16_t Xpos, uint16_t Ypos, uint16_t Radius)
+{
+    int x = -Radius, y = 0, err = 2-2*Radius, e2;
+    do {
+        *(__IO uint16_t*) (CurrentFrameBuffer + (2*((Xpos-x) + LCD_PIXEL_WIDTH*(Ypos+y)))) = CurrentTextColor; 
+        *(__IO uint16_t*) (CurrentFrameBuffer + (2*((Xpos+x) + LCD_PIXEL_WIDTH*(Ypos+y)))) = CurrentTextColor;
+        *(__IO uint16_t*) (CurrentFrameBuffer + (2*((Xpos+x) + LCD_PIXEL_WIDTH*(Ypos-y)))) = CurrentTextColor;
+        *(__IO uint16_t*) (CurrentFrameBuffer + (2*((Xpos-x) + LCD_PIXEL_WIDTH*(Ypos-y)))) = CurrentTextColor;
+      
+        e2 = err;
+        if (e2 <= y) {
+            err += ++y*2+1;
+            if (-x == y && e2 <= x) e2 = 0;
+        }
+        if (e2 > x) err += ++x*2+1;
+    }
+    while (x <= 0);
 }
 
 /**
