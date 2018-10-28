@@ -128,17 +128,17 @@ int main(void)
 
   /* Initialise the graphical stack engine */
 	
-//  GRAPHICS_Init();
+  GRAPHICS_Init();
 //  
 //	GUI_SetDefaultBkColor(GUI_RED);
 //	GUI_SetColor(GUI_BLUE);
 //	GUI_DrawLine(0,0,50,50);
   /* Graphic application */  
-//  GRAPHICS_MainTask();
+	  GRAPHICS_MainTask();
 //	__HAL_LTDC_LAYER_ENABLE(&hltdc,LTDC_LAYER_1);
 //	__HAL_LTDC_RELOAD_IMMEDIATE_CONFIG(&hltdc);
 //  __HAL_LTDC_ENABLE(&hltdc);
-    LCD_DrawCircle(50,50,45);
+//    LCD_DrawCircle(50,50,45);
   /* Infinite loop */
   for(;;);
 
