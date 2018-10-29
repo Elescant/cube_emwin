@@ -44,10 +44,12 @@
   */
 #include "GUI_App.h"
 #include "GUI.h"
+#include "DIALOG.h"
 
 void GRAPHICS_MainTask(void) {
 
 /* USER CODE BEGIN GRAPHICS_MainTask */
+	CreateFramewin();
  /* User can implement his graphic application here */
   /* Hello Word example */
     GUI_Clear();
