@@ -93,7 +93,7 @@ uint16_t IOE_ReadID(void)
   uint16_t tmp = 0;
 
   /* Read device ID  */
-  tmp = I2C_ReadDeviceRegister(1);
+  tmp = I2C_ReadDeviceRegister(0);
   tmp = (uint32_t)(tmp << 8);
   tmp |= (uint32_t)I2C_ReadDeviceRegister(1);
   

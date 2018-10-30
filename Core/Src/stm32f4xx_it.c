@@ -43,6 +43,7 @@
 extern DMA2D_HandleTypeDef hdma2d;
 extern LTDC_HandleTypeDef hltdc;
 extern I2C_HandleTypeDef hi2c3;
+
 extern TIM_HandleTypeDef htim6;
 
 extern void GRAPHICS_IncTick(void);
@@ -114,6 +115,20 @@ void TIM6_DAC_IRQHandler(void)
 }
 
 /**
+* @brief This function handles I2C3 event interrupt.
+*/
+void I2C3_EV_IRQHandler(void)
+{
+  /* USER CODE BEGIN I2C3_EV_IRQn 0 */
+
+  /* USER CODE END I2C3_EV_IRQn 0 */
+  HAL_I2C_EV_IRQHandler(&hi2c3);
+  /* USER CODE BEGIN I2C3_EV_IRQn 1 */
+
+  /* USER CODE END I2C3_EV_IRQn 1 */
+}
+
+/**
 * @brief This function handles LTDC global interrupt.
 */
 void LTDC_IRQHandler(void)
@@ -142,9 +157,5 @@ void DMA2D_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
-void I2C3_EV_IRQHandler(void)
-{
-  HAL_I2C_EV_IRQHandler(&hi2c3);
-}
 /* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

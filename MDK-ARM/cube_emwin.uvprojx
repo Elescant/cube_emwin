@@ -337,7 +337,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F429xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../STemWin/Target;      ../STemWin/App;      ../Core/Inc;      ../Drivers/STM32F4xx_HAL_Driver/Inc;      ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;      ../Drivers/BSP/Components/ili9341;      ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;      ../Middlewares/ST/STemWin/inc;      ../Drivers/BSP/Components/Common;      ../Drivers/CMSIS/Include</IncludePath>
+              <IncludePath>../STemWin/Target;       ../STemWin/App;       ../Core/Inc;       ../Drivers/STM32F4xx_HAL_Driver/Inc;       ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;       ../Drivers/BSP/Components/ili9341;       ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;       ../Middlewares/ST/STemWin/inc;       ../Drivers/BSP/Components/Common;       ../Drivers/CMSIS/Include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
