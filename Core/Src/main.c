@@ -57,6 +57,8 @@
 /* Private variables ---------------------------------------------------------*/
 CRC_HandleTypeDef hcrc;
 
+I2C_HandleTypeDef hi2c3;
+
 SPI_HandleTypeDef hspi5;
 
 TIM_HandleTypeDef htim1;
@@ -75,14 +77,19 @@ static void MX_TIM1_Init(void);
 extern void GRAPHICS_HW_Init(void);
 extern void GRAPHICS_Init(void);
 extern void GRAPHICS_MainTask(void);
+static void MX_I2C3_Init(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
 
 /* USER CODE END PFP */
-void LCD_DrawCircle(uint16_t Xpos, uint16_t Ypos, uint16_t Radius);
 /* USER CODE BEGIN 0 */
-
+void LCD_DrawCircle(uint16_t Xpos, uint16_t Ypos, uint16_t Radius);
+extern LTDC_HandleTypeDef            hltdc; 
+//	__HAL_LTDC_LAYER_ENABLE(&hltdc,LTDC_LAYER_1);
+//	__HAL_LTDC_RELOAD_IMMEDIATE_CONFIG(&hltdc);
+//  __HAL_LTDC_ENABLE(&hltdc);
+//    LCD_DrawCircle(50,50,45);
 /* USER CODE END 0 */
 
 /**
@@ -90,8 +97,6 @@ void LCD_DrawCircle(uint16_t Xpos, uint16_t Ypos, uint16_t Radius);
   *
   * @retval None
   */
-	
-extern LTDC_HandleTypeDef            hltdc; 
 int main(void)
 {
   /* USER CODE BEGIN 1 */
@@ -119,6 +124,7 @@ int main(void)
   MX_CRC_Init();
   MX_SPI5_Init();
   MX_TIM1_Init();
+  MX_I2C3_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -127,46 +133,14 @@ int main(void)
   GRAPHICS_HW_Init();
 
   /* Initialise the graphical stack engine */
-	
   GRAPHICS_Init();
-//  
-//	GUI_SetDefaultBkColor(GUI_RED);
-//	GUI_SetColor(GUI_BLUE);
-//	GUI_DrawLine(0,0,50,50);
+  
   /* Graphic application */  
-	  GRAPHICS_MainTask();
-//	__HAL_LTDC_LAYER_ENABLE(&hltdc,LTDC_LAYER_1);
-//	__HAL_LTDC_RELOAD_IMMEDIATE_CONFIG(&hltdc);
-//  __HAL_LTDC_ENABLE(&hltdc);
-//    LCD_DrawCircle(50,50,45);
+  GRAPHICS_MainTask();
+    
   /* Infinite loop */
   for(;;);
 
-}
-
-/* LCD Size (Width and Height) */
-#define  LCD_PIXEL_WIDTH    ((uint16_t)240)
-#define  LCD_PIXEL_HEIGHT   ((uint16_t)320)
-static uint32_t CurrentFrameBuffer = LCD_FRAME_BUFFER;
-static uint16_t CurrentTextColor   = 0x0000;
-
-void LCD_DrawCircle(uint16_t Xpos, uint16_t Ypos, uint16_t Radius)
-{
-    int x = -Radius, y = 0, err = 2-2*Radius, e2;
-    do {
-        *(__IO uint16_t*) (CurrentFrameBuffer + (2*((Xpos-x) + LCD_PIXEL_WIDTH*(Ypos+y)))) = CurrentTextColor; 
-        *(__IO uint16_t*) (CurrentFrameBuffer + (2*((Xpos+x) + LCD_PIXEL_WIDTH*(Ypos+y)))) = CurrentTextColor;
-        *(__IO uint16_t*) (CurrentFrameBuffer + (2*((Xpos+x) + LCD_PIXEL_WIDTH*(Ypos-y)))) = CurrentTextColor;
-        *(__IO uint16_t*) (CurrentFrameBuffer + (2*((Xpos-x) + LCD_PIXEL_WIDTH*(Ypos-y)))) = CurrentTextColor;
-      
-        e2 = err;
-        if (e2 <= y) {
-            err += ++y*2+1;
-            if (-x == y && e2 <= x) e2 = 0;
-        }
-        if (e2 > x) err += ++x*2+1;
-    }
-    while (x <= 0);
 }
 
 /**
@@ -248,6 +222,26 @@ static void MX_CRC_Init(void)
 
 }
 
+/* I2C3 init function */
+static void MX_I2C3_Init(void)
+{
+
+  hi2c3.Instance = I2C3;
+  hi2c3.Init.ClockSpeed = 400000;
+  hi2c3.Init.DutyCycle = I2C_DUTYCYCLE_16_9;
+  hi2c3.Init.OwnAddress1 = 0x3E;
+  hi2c3.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c3.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c3.Init.OwnAddress2 = 0;
+  hi2c3.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c3.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c3) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+}
+
 /* SPI5 init function */
 static void MX_SPI5_Init(void)
 {
@@ -270,11 +264,6 @@ static void MX_SPI5_Init(void)
     _Error_Handler(__FILE__, __LINE__);
   }
 
-}
-
-SPI_HandleTypeDef *Get_Hspi5()
-{
-  return &hspi5;
 }
 
 /* TIM1 init function */
@@ -320,8 +309,6 @@ static void MX_TIM1_Init(void)
      PB13   ------> USB_OTG_HS_VBUS
      PB14   ------> USB_OTG_HS_DM
      PB15   ------> USB_OTG_HS_DP
-     PC9   ------> I2C3_SDA
-     PA8   ------> I2C3_SCL
      PA9   ------> USART1_TX
      PA10   ------> USART1_RX
 */
@@ -410,22 +397,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : I2C3_SDA_Pin */
-  GPIO_InitStruct.Pin = I2C3_SDA_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  GPIO_InitStruct.Alternate = GPIO_AF4_I2C3;
-  HAL_GPIO_Init(I2C3_SDA_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : I2C3_SCL_Pin */
-  GPIO_InitStruct.Pin = I2C3_SCL_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  GPIO_InitStruct.Alternate = GPIO_AF4_I2C3;
-  HAL_GPIO_Init(I2C3_SCL_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : STLINK_RX_Pin STLINK_TX_Pin */
   GPIO_InitStruct.Pin = STLINK_RX_Pin|STLINK_TX_Pin;

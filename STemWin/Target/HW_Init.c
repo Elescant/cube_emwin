@@ -45,7 +45,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "HW_Init.h"
-#include "rgb565_240x320.h"
+
 /** @addtogroup HARDWARE CONFIGURATION
 * @{
 */
@@ -107,7 +107,7 @@ void MX_LCD_Init(void)
   hltdc.Init.TotalHeigh = 327;
   hltdc.Init.Backcolor.Blue = 0;
   hltdc.Init.Backcolor.Green = 0;
-  hltdc.Init.Backcolor.Red = 255;
+  hltdc.Init.Backcolor.Red = 0;
   if (HAL_LTDC_Init(&hltdc) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
@@ -122,7 +122,7 @@ void MX_LCD_Init(void)
   pLayerCfg.Alpha0 = 0;
   pLayerCfg.BlendingFactor1 = LTDC_BLENDING_FACTOR1_PAxCA;
   pLayerCfg.BlendingFactor2 = LTDC_BLENDING_FACTOR2_PAxCA;
-  pLayerCfg.FBStartAdress = LCD_FRAME_BUFFER;//RGB565_240X320_ADDRESS;
+  pLayerCfg.FBStartAdress = RGB565_240X320_ADDRESS;
   pLayerCfg.ImageWidth = 240;
   pLayerCfg.ImageHeight = 320;
   pLayerCfg.Backcolor.Blue = 0;
@@ -162,7 +162,7 @@ void MX_FMC_Init(void)
   SdramTiming.ExitSelfRefreshDelay = 7;
   SdramTiming.SelfRefreshTime = 4;
   SdramTiming.RowCycleDelay = 7;
-  SdramTiming.WriteRecoveryTime = 2;
+  SdramTiming.WriteRecoveryTime = 3;
   SdramTiming.RPDelay = 2;
   SdramTiming.RCDDelay = 2;
 
