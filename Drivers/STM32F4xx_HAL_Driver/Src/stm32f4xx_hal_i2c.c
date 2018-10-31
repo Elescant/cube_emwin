@@ -3355,6 +3355,7 @@ void HAL_I2C_EV_IRQHandler(I2C_HandleTypeDef *hi2c)
   uint32_t itsources    = READ_REG(hi2c->Instance->CR2);
 
   uint32_t CurrentMode  = hi2c->Mode;
+
   /* Master or Memory mode selected */
   if((CurrentMode == HAL_I2C_MODE_MASTER) || (CurrentMode == HAL_I2C_MODE_MEM))
   {

@@ -47,7 +47,6 @@
 #include "STemwin_wrapper.h"
 #include "GUI_Private.h"
 #include "WM.h"
-#include "main.h"
 /** @addtogroup LCD CONFIGURATION
 * @{
 */

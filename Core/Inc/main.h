@@ -52,6 +52,7 @@
 #define __MAIN_H__
 
 /* Includes ------------------------------------------------------------------*/
+#include "stm32f4xx_hal.h"
 
 #include "stm32f4xx_hal.h"
 #include "GUI.h"
@@ -67,6 +68,7 @@
 /* USER CODE END Includes */
 
 /* Private define ------------------------------------------------------------*/
+
 #define PC14_OSC32_IN_Pin GPIO_PIN_14
 #define PC14_OSC32_IN_GPIO_Port GPIOC
 #define PC15_OSC32_OUT_Pin GPIO_PIN_15
