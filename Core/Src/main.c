@@ -49,6 +49,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f4xx_hal.h"
+#include "cmsis_os.h"
 #include "crc.h"
 #include "i2c.h"
 #include "spi.h"
@@ -68,6 +69,7 @@
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+void MX_FREERTOS_Init(void);
 extern void GRAPHICS_HW_Init(void);
 extern void GRAPHICS_Init(void);
 extern void GRAPHICS_MainTask(void);
@@ -78,7 +80,29 @@ extern void GRAPHICS_MainTask(void);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
-void LCD_DrawCircle(uint16_t Xpos, uint16_t Ypos, uint16_t Radius);
+  
+void LCD_DrawCircle(uint16_t Xpos, uint16_t Ypos, uint16_t Radius)
+{  
+    uint32_t CurrentFrameBuffer = ((uint32_t)0xD0000000);
+    const uint16_t LCD_PIXEL_WIDTH = 240;
+    static uint16_t CurrentTextColor   = 0xFF00;
+
+    int x = -Radius, y = 0, err = 2-2*Radius, e2;
+    do {
+        *(__IO uint16_t*) (CurrentFrameBuffer + (2*((Xpos-x) + LCD_PIXEL_WIDTH*(Ypos+y)))) = CurrentTextColor; 
+        *(__IO uint16_t*) (CurrentFrameBuffer + (2*((Xpos+x) + LCD_PIXEL_WIDTH*(Ypos+y)))) = CurrentTextColor;
+        *(__IO uint16_t*) (CurrentFrameBuffer + (2*((Xpos+x) + LCD_PIXEL_WIDTH*(Ypos-y)))) = CurrentTextColor;
+        *(__IO uint16_t*) (CurrentFrameBuffer + (2*((Xpos-x) + LCD_PIXEL_WIDTH*(Ypos-y)))) = CurrentTextColor;
+      
+        e2 = err;
+        if (e2 <= y) {
+            err += ++y*2+1;
+            if (-x == y && e2 <= x) e2 = 0;
+        }
+        if (e2 > x) err += ++x*2+1;
+    }
+    while (x <= 0);
+}
 extern LTDC_HandleTypeDef            hltdc; 
 //	__HAL_LTDC_LAYER_ENABLE(&hltdc,LTDC_LAYER_1);
 //	__HAL_LTDC_RELOAD_IMMEDIATE_CONFIG(&hltdc);
@@ -128,12 +152,26 @@ int main(void)
 
   /* Initialise the graphical stack engine */
   GRAPHICS_Init();
+      
+  /* Call init function for freertos objects (in freertos.c) */
+  MX_FREERTOS_Init();
+
+  /* Start scheduler */
+  osKernelStart();
   
-  /* Graphic application */  
-  GRAPHICS_MainTask();
-    
+  /* We should never get here as control is now taken by the scheduler */
+
   /* Infinite loop */
-  for(;;);
+  /* USER CODE BEGIN WHILE */
+  while (1)
+  {
+
+  /* USER CODE END WHILE */
+
+  /* USER CODE BEGIN 3 */
+
+  }
+  /* USER CODE END 3 */
 
 }
 
@@ -201,7 +239,7 @@ void SystemClock_Config(void)
   HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
 
   /* SysTick_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
+  HAL_NVIC_SetPriority(SysTick_IRQn, 15, 0);
 }
 
 /* USER CODE BEGIN 4 */

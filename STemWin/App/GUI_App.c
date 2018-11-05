@@ -44,36 +44,24 @@
   */
 #include "GUI_App.h"
 #include "GUI.h"
-#include "touch.h"
-#include "stdlib.h"
-#include "string.h"
 
-void GRAPHICS_MainTask(void)
-{
+void GRAPHICS_MainTask(void) {
 
-  char posstr[20]={0};
-	static TP_STATE* TP_State; 
 /* USER CODE BEGIN GRAPHICS_MainTask */
-	//CreateFramewin();
+	 CreateFramewin();
  /* User can implement his graphic application here */
   /* Hello Word example */
     GUI_Clear();
     GUI_SetColor(GUI_BLUE);
     GUI_SetFont(&GUI_Font32_1);
-    if(Touch_Config() == HAL_OK)
-		{
-		}
+    GUI_DispStringAt("Hello World", (LCD_GetXSize()-150)/2, (LCD_GetYSize()-20)/2);
+    // if(Touch_Config() == HAL_OK)
+		// {
+		// }
 /* USER CODE END GRAPHICS_MainTask */
   while(1)
 {
-   GUI_Delay(100);
-	 TP_State = IOE_TP_GetState();
-   if(TP_State->TouchDetected)
-   {
-    memset(posstr,0,sizeof(posstr));
-    sprintf(posstr,"x:%d,y:%d",TP_State->X,TP_State->Y);
-    GUI_DispStringAt(posstr, (LCD_GetXSize()-150)/2, (LCD_GetYSize()-20)/2);
-   }
+      GUI_Delay(100);
 }
 }
 

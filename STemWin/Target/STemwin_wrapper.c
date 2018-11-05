@@ -47,6 +47,7 @@
 #include "STemwin_wrapper.h"
 #include "GUI_Private.h"
 #include "WM.h"
+
 /** @addtogroup LCD CONFIGURATION
 * @{
 */
@@ -76,7 +77,6 @@
 
 extern LTDC_HandleTypeDef    hltdc;
 extern DMA2D_HandleTypeDef   hdma2d;
-extern volatile GUI_TIMER_TIME OS_TimeMS;
 static          LCD_LayerPropTypedef          layer_prop[GUI_NUM_LAYERS];
 volatile char   TransferInProgress  = 0;
 
@@ -941,10 +941,6 @@ int LCD_X_DisplayDriver(unsigned LayerIndex, unsigned Cmd, void * pData)
   }
   return r; 
 }
-void GRAPHICS_IncTick(void){
-  
-   OS_TimeMS++;
-} 
 
 void GRAPHICS_HW_Init(void)
 { 
