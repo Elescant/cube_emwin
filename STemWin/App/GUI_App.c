@@ -1,4 +1,4 @@
-  /**
+/**
   ******************************************************************************
   * @file    GUI_App.c
   * @author  MCD Application Team
@@ -44,47 +44,50 @@
   */
 #include "GUI_App.h"
 #include "GUI.h"
+#include "touch.h"
 
-void GRAPHICS_MainTask(void) {
-
-/* USER CODE BEGIN GRAPHICS_MainTask */
-	 CreateFramewin();
- /* User can implement his graphic application here */
-  /* Hello Word example */
-    GUI_Clear();
-    GUI_SetColor(GUI_BLUE);
-    GUI_SetFont(&GUI_Font32_1);
-    GUI_DispStringAt("Hello World", (LCD_GetXSize()-150)/2, (LCD_GetYSize()-20)/2);
-    // if(Touch_Config() == HAL_OK)
-		// {
-		// }
-/* USER CODE END GRAPHICS_MainTask */
-  static GUI_PID_STATE state;
-  while(1)
+void GRAPHICS_MainTask(void)
 {
-      GUI_Delay(50);
-      while(Btn_GetState() != GPIO_PIN_SET)
-			{
-				GUI_Delay(50);
-			}
-			state.Pressed = 1;
-      state.x = 230;
-      state.y = 310;
-      GUI_PID_StoreState(&state);
-			LED3_ON();
-	    while(Btn_GetState() != GPIO_PIN_RESET)
-			{
-				GUI_Delay(50);
-			}
-		  state.Pressed = 0;
-      state.x = 230;
-      state.y = 310;
-      GUI_PID_StoreState(&state);
-      LED3_OFF();
-      
 
+  /* USER CODE BEGIN GRAPHICS_MainTask */
+  static GUI_PID_STATE pid_state;
+  TP_STATE *touch_state;
+  uint8_t last_state = 0;
 
-}
+  CreateFramewin();
+  /* User can implement his graphic application here */
+  /* Hello Word example */
+  GUI_Clear();
+  GUI_SetColor(GUI_BLUE);
+  GUI_SetFont(&GUI_Font32_1);
+  GUI_DispStringAt("Hello World", (LCD_GetXSize() - 150) / 2, (LCD_GetYSize() - 20) / 2);
+  if (Touch_Config() == HAL_OK)
+  {
+  }
+  /* USER CODE END GRAPHICS_MainTask */
+  while (1)
+  {
+    GUI_Delay(50);
+    touch_state = IOE_TP_GetState();
+    if(touch_state->TouchDetected)
+    {
+      pid_state.x = touch_state->X;
+      pid_state.y = touch_state->Y;
+      pid_state.Pressed = 1;
+      GUI_PID_StoreState(&pid_state);
+      last_state = 1;
+    }else
+    {
+      if(last_state)
+      {
+        last_state = 0;
+        pid_state.x = touch_state->X;
+        pid_state.y = touch_state->Y;
+        pid_state.Pressed = 0;
+        GUI_PID_StoreState(&pid_state);
+      }
+    }
+   }
 }
 
 /*************************** End of file ****************************/
