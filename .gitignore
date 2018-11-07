@@ -9,3 +9,7 @@ MDK-ARM/cube_emwin/cube_emwin.lnp
 MDK-ARM/cube_emwin/cube_emwin.build_log.htm
 MDK-ARM/cube_emwin/cube_emwin_cube_emwin.dep
 MDK-ARM/cube_emwin/
+MDK-ARM/cube_emwin.uvoptx
+MDK-ARM/cube_emwin.uvprojx
+MDK-ARM/cube_emwin.uvguix.feng
+MDK-ARM/JLinkLog.txt

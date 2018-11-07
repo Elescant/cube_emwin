@@ -48,6 +48,7 @@
 /* Exported functions ------------------------------------------------------- */
 
 void SysTick_Handler(void);
+void EXTI0_IRQHandler(void);
 void TIM6_DAC_IRQHandler(void);
 void I2C3_EV_IRQHandler(void);
 void LTDC_IRQHandler(void);

@@ -59,9 +59,31 @@ void GRAPHICS_MainTask(void) {
 		// {
 		// }
 /* USER CODE END GRAPHICS_MainTask */
+  static GUI_PID_STATE state;
   while(1)
 {
-      GUI_Delay(100);
+      GUI_Delay(50);
+      while(Btn_GetState() != GPIO_PIN_SET)
+			{
+				GUI_Delay(50);
+			}
+			state.Pressed = 1;
+      state.x = 230;
+      state.y = 310;
+      GUI_PID_StoreState(&state);
+			LED3_ON();
+	    while(Btn_GetState() != GPIO_PIN_RESET)
+			{
+				GUI_Delay(50);
+			}
+		  state.Pressed = 0;
+      state.x = 230;
+      state.y = 310;
+      GUI_PID_StoreState(&state);
+      LED3_OFF();
+      
+
+
 }
 }
 

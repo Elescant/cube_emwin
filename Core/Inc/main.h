@@ -103,8 +103,9 @@
 #define NCS_MEMS_SPI_GPIO_Port GPIOC
 #define CSX_Pin GPIO_PIN_2
 #define CSX_GPIO_Port GPIOC
-#define B1_Pin GPIO_PIN_0
-#define B1_GPIO_Port GPIOA
+#define USR_BTN_Pin GPIO_PIN_0
+#define USR_BTN_GPIO_Port GPIOA
+#define USR_BTN_EXTI_IRQn EXTI0_IRQn
 #define MEMS_INT1_Pin GPIO_PIN_1
 #define MEMS_INT1_GPIO_Port GPIOA
 #define MEMS_INT2_Pin GPIO_PIN_2
@@ -262,6 +263,12 @@
 /* #define USE_FULL_ASSERT    1U */
 
 /* USER CODE BEGIN Private defines */
+#define LED3_ON()  (HAL_GPIO_WritePin(LD3_GPIO_Port,LD3_Pin,GPIO_PIN_SET))
+#define LED3_OFF()  (HAL_GPIO_WritePin(LD3_GPIO_Port,LD3_Pin,GPIO_PIN_RESET))
+#define LED4_ON()  (HAL_GPIO_WritePin(LD4_GPIO_Port,LD4_Pin,GPIO_PIN_SET))
+#define LED4_OFF()  (HAL_GPIO_WritePin(LD4_GPIO_Port,LD4_Pin,GPIO_PIN_RESET))
+
+#define Btn_GetState() (HAL_GPIO_ReadPin(USR_BTN_GPIO_Port,USR_BTN_Pin))
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
