@@ -81,5 +81,6 @@
 #define GUI_WINSUPPORT                (1)    /* Use window manager */
 #define GUI_SUPPORT_MEMDEV            (1)    /* Memory device package available */
 #define GUI_SUPPORT_DEVICES           (1)    /* Enable use of device pointers */
- 
+#define GUI_SUPPORT_TOUCH             (1)
+#define GUI_SUPPORT_CURSOR            (1)
 #endif  /* Avoid multiple inclusion */

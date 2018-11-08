@@ -55,6 +55,7 @@ void GRAPHICS_MainTask(void)
   uint8_t last_state = 0;
 
   CreateFramewin();
+  GUI_CURSOR_Show();
   /* User can implement his graphic application here */
   /* Hello Word example */
   GUI_Clear();
@@ -67,7 +68,7 @@ void GRAPHICS_MainTask(void)
   /* USER CODE END GRAPHICS_MainTask */
   while (1)
   {
-    GUI_Delay(50);
+    GUI_Delay(10);
     touch_state = IOE_TP_GetState();
     if(touch_state->TouchDetected)
     {

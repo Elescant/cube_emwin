@@ -95,6 +95,7 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
   int NCode;
   int Id;
   // USER START (Optionally insert additional variables)
+  static int prog=0;
   // USER END
 
   switch (pMsg->MsgId) {
@@ -106,6 +107,15 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
       switch(NCode) {
       case WM_NOTIFICATION_CLICKED:
         // USER START (Optionally insert code for reacting on notification message)
+          {
+            WM_HWIN hItem;
+            hItem = WM_GetDialogItem(pMsg->hWin,ID_PROGBAR_0);
+            PROGBAR_SetValue(hItem,prog);
+            if(prog>0)
+            {
+              prog--;
+            }
+          }
         // USER END
         break;
       case WM_NOTIFICATION_RELEASED:
@@ -120,6 +130,15 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
       switch(NCode) {
       case WM_NOTIFICATION_CLICKED:
         // USER START (Optionally insert code for reacting on notification message)
+          {
+            WM_HWIN hItem;
+            hItem = WM_GetDialogItem(pMsg->hWin,ID_PROGBAR_0);
+            PROGBAR_SetValue(hItem,prog);
+            if(prog<100)
+            {
+              prog++;
+            }
+          }
         // USER END
         break;
       case WM_NOTIFICATION_RELEASED:
