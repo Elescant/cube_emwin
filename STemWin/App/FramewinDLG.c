@@ -62,8 +62,8 @@
 */
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] = {
   { FRAMEWIN_CreateIndirect, "Framewin", ID_FRAMEWIN_0, 0, 0, 240, 320, 0, 0x0, 0 },
-  { BUTTON_CreateIndirect, "Back", ID_BUTTON_0, 2, 278, 80, 20, 0, 0x0, 0 },
-  { BUTTON_CreateIndirect, "OK", ID_BUTTON_1, 147, 277, 80, 20, 0, 0x0, 0 },
+  { BUTTON_CreateIndirect, "返回", ID_BUTTON_0, 2, 278, 80, 20, 0, 0x0, 0 },
+  { BUTTON_CreateIndirect, "确定", ID_BUTTON_1, 147, 277, 80, 20, 0, 0x0, 0 },
   { TEXT_CreateIndirect, "Speed", ID_TEXT_0, 8, 11, 39, 20, 0, 0x0, 0 },
   { TEXT_CreateIndirect, "Tac", ID_TEXT_1, 8, 42, 44, 20, 0, 0x0, 0 },
   { TEXT_CreateIndirect, "Water", ID_TEXT_2, 8, 71, 43, 20, 0, 0x0, 0 },
@@ -85,6 +85,14 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] = {
 */
 
 // USER START (Optionally insert additional static code)
+extern GUI_CONST_STORAGE GUI_FONT GUI_Fontsong16;
+void InitDialog(WM_MESSAGE *pMsg)
+{
+	WM_HWIN hWin = pMsg->hWin;
+
+	BUTTON_SetFont(WM_GetDialogItem(hWin, ID_BUTTON_0), &GUI_Fontsong16);
+	BUTTON_SetFont(WM_GetDialogItem(hWin, ID_BUTTON_1), &GUI_Fontsong16);
+}
 // USER END
 
 /*********************************************************************
@@ -99,6 +107,10 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
   // USER END
 
   switch (pMsg->MsgId) {
+		
+	case WM_INIT_DIALOG:
+		InitDialog(pMsg);
+		break;
   case WM_NOTIFY_PARENT:
     Id    = WM_GetId(pMsg->hWinSrc);
     NCode = pMsg->Data.v;

@@ -54,6 +54,7 @@ void GRAPHICS_MainTask(void)
   TP_STATE *touch_state;
   uint8_t last_state = 0;
 
+	GUI_UC_SetEncodeUTF8();
   CreateFramewin();
   GUI_CURSOR_Show();
   /* User can implement his graphic application here */
